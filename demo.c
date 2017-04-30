@@ -57,7 +57,7 @@ void Test1() {
 	GenList_Destroy(list);
 }
 
-bool ForEach_Free(int i, void *item) {
+bool ForEach_Free(int i, void *item, void *userdata) {
 	free(item);
 	return false;
 }
@@ -83,7 +83,7 @@ void Test2() {
 		GenList_GetAt(list, i, (void**)&item);
 		printf("[%2u] %s\n", i, item);
 	}
-	GenList_ForEach(list, ForEach_Free); // you free() them
+	GenList_ForEach(list, ForEach_Free, NULL); // you free() them
 	GenList_Destroy(list);
 }
 
@@ -117,7 +117,7 @@ void Test4() {
 	printf("OK!\n");
 	printf("Press ENTER to destroy.\n");
 	GetInput();
-	GenList_ForEach(list, ForEach_Free); // you free() them
+	GenList_ForEach(list, ForEach_Free, NULL); // you free() them
 	GenList_Destroy(list);
 	printf("Done...\n");
 }

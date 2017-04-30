@@ -85,8 +85,8 @@ bool GenList_AddAt(GENLIST list, size_t i, void *item) {
 	// Let items = [a][b][c][d][ ] , item = [*] , i = 2
 	// First, [a][b][c][c][d]
 	//  then, [a][b][*][c][d]
-	for (size_t a = lis->used; a-- > i;) {
-		lis->data[a+1] = lis->data[a];
+	for (size_t i = lis->used; i-- > i;) {
+		lis->data[i+1] = lis->data[i];
 	}
 	if (lis->do_memcpy) {
 		lis->data[i] = malloc(lis->item_size);
@@ -120,9 +120,9 @@ bool GenList_GetAt(GENLIST list, size_t i, void **item) {
 bool GenList_Clear(GENLIST list) {
 	MUST_NOT_NULL; LIST_AS_LIS;
 	if (lis->do_memcpy) {
-		for (size_t a = 0; a < lis->used; ++a) {
-			free(lis->data[a]);
-			lis->data[a] = NULL;
+		for (size_t i = 0; i < lis->used; ++i) {
+			free(lis->data[i]);
+			lis->data[i] = NULL;
 		}
 	}
 	lis->used = 0;
@@ -142,18 +142,18 @@ bool GenList_RemoveAt(GENLIST list, size_t i) {
 	}
 	// let items = [a][b][c][d], i = 2
 	// let it be [a][b][d][ ]
-	for (size_t a = i; a < max_i; ++a) {
-		lis->data[a] = lis->data[a+1];
+	for (size_t j = i; j < max_i; ++j) {
+		lis->data[j] = lis->data[j+1];
 	}
 	lis->data[max_i-1] = NULL;
 	--(lis->used);
 	return true;
 }
 
-bool GenList_ForEach(GENLIST list, GENLIST_FOREACH_HANDLER fn) {
+bool GenList_ForEach(GENLIST list, GENLIST_FOREACH_HANDLER fn, void *userdata) {
 	MUST_NOT_NULL; LIST_AS_LIS;
-	for (size_t a = 0; a < lis->used; ++a) {
-		if (fn(a, lis->data[a])) { break; }
+	for (size_t i = 0; i < lis->used; ++i) {
+		if (fn(i, lis->data[i], userdata)) { break; }
 	}
 	return true;
 }

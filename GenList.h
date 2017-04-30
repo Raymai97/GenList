@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 typedef void* GENLIST;
-typedef bool (*GENLIST_FOREACH_HANDLER)(int, void*); // return true to 'break'
+typedef bool (*GENLIST_FOREACH_HANDLER)(int index, void *item, void *userdata); // return true to 'break'
 
 bool GenList_Create(GENLIST*, size_t item_size, bool do_memcpy);
 bool GenList_Destroy(GENLIST);
@@ -30,7 +30,7 @@ bool GenList_GetAt(GENLIST, size_t i, void **item);
 bool GenList_Clear(GENLIST);
 bool GenList_RemoveAt(GENLIST, size_t i);
 
-bool GenList_ForEach(GENLIST, GENLIST_FOREACH_HANDLER);
+bool GenList_ForEach(GENLIST, GENLIST_FOREACH_HANDLER, void *userdata);
 
 /* Error message ------------- */
 
